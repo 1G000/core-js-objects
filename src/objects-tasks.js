@@ -33,10 +33,23 @@ function shallowCopy(obj) {
  *    mergeObjects([{a: 1, b: 2}, {b: 3, c: 5}]) => {a: 1, b: 5, c: 5}
  *    mergeObjects([]) => {}
  */
-function mergeObjects(/* objects */) {
-  throw new Error('Not implemented');
-}
+function mergeObjects(objects) {
+  const newArr = [];
+  objects.forEach((el) => {
+    newArr.push(...Object.entries(el));
+  });
 
+  return newArr.reduce((acc, el) => {
+    const [key, value] = el;
+
+    if (!acc[key]) {
+      acc[key] = value;
+    } else {
+      acc[key] += value;
+    }
+    return acc;
+  }, {});
+}
 /**
  * Removes a properties from an object.
  *
@@ -119,8 +132,16 @@ function makeImmutable(/* obj */) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+
+function makeWord(lettersObject) {
+  const answer = Array(Object.values(lettersObject).flat().length).fill(0);
+  Object.entries(lettersObject).forEach((element) =>
+    element[1].forEach((el) => {
+      answer.splice(el, 1, element[0]);
+    })
+  );
+
+  return answer.join('');
 }
 
 /**
